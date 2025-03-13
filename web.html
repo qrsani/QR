@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codificador y Generador de QR</title>
+  <!-- Incluimos la librería QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    /* Reset y estilos base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      color: #007bff;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .resultado {
+      margin-top: 20px;
+      font-size: 1.1em;
+      word-break: break-all;
+    }
+    #qrcode {
+      margin-top: 20px;
+      display: inline-block;
+    }
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script>
+    function codificar() {
+      // Obtener los valores de los inputs
+      var numero = document.getElementById("numero").value;
+      var nombre = document.getElementById("nombre").value;
+      
+      // Rellenar con ceros a la izquierda hasta 8 dígitos
+      numero = numero.padStart(8, '0');
+      
+      // Construir la cadena codificada
+      var resultado = "%pen T&" + numero + "&" + nombre;
+      
+      // Mostrar el resultado en el elemento "resultado"
+      document.getElementById("resultado").innerText = resultado;
+      
+      // Generar el código QR
+      var qrContainer = document.getElementById("qrcode");
+      // Limpiar el contenedor para regenerar el QR
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: resultado,
+        width: 200,
+        height: 200
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Generador de QR</h1>
+    
+    <label for="numero">Número (8 dígitos):</label>
+    <input type="text" id="numero" maxlength="8" placeholder="Ej: 12345678">
+    
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" placeholder="Ingresa tu nombre">
+    
+    <button onclick="codificar()">Codificar y Generar QR</button>
+    
+    <div class="resultado" id="resultado"></div>
+    <div id="qrcode"></div>
+  </div>
+</body>
+</html>
